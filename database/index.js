@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/hrmvp', {useMongoClient: true});
+mongoose.connect('mongodb://localhost/hrmvp');
 
 let traditionalEraSchema = mongoose.Schema({
   id: {type: Number, unique: true},
@@ -21,6 +21,7 @@ let statcastEraSchema = mongoose.Schema({
 
 let countSchema = mongoose.Schema({
   id: {type: Number, unique: true},
+  date: Date,
   category: String,
   verified: Boolean,
   era: String

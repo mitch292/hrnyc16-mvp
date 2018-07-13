@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor() {
@@ -11,7 +12,16 @@ class App extends React.Component {
       isLoading: false
     }
   }
+  searchTwitter(value) {
+    console.log('triggering search twitter')
+    return axios.post('/statcast', {
+      query: 'test'
+    }).then((response) => {
+      console.log('response on client', response)
+    })
+  }
   render() {
+    this.searchTwitter();
     if (this.state.isLoading) {
       return (
         <h3>Hold on just a sec...</h3>
