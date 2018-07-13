@@ -26,7 +26,8 @@
     "hmacsha1": "^1.0.0",
     "mongoose": "^5.2.3",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.4.1",
+    "twitter-node-client": "0.0.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
