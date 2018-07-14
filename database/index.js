@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/hrmvp');
 
 let traditionalEraSchema = mongoose.Schema({
-  category: String,
+  count: Number,
   verified: Boolean
 });
 
 let sabrEraSchema = mongoose.Schema({
-  category: String,
+  count: Number,
   verified: Boolean
 });
 
@@ -17,18 +17,18 @@ let statcastEraSchema = mongoose.Schema({
 });
 
 let countSchema = mongoose.Schema({
-  id: {type: Number, unique: true},
-  date: Date,
-  category: String,
-  verified: Boolean,
+  date: String,
+  count: Number,
   era: String
 });
 
 let Traditional = mongoose.model('Traditional', traditionalEraSchema);
 let SabrEra = mongoose.model('SabrEra', sabrEraSchema);
 let Statcast = mongoose.model('Statcast', statcastEraSchema);
+let History = mongoose.model('History', countSchema);
 
-//TODO: function to save data to db
+
+
 let save = (total, era) => {
   if (era === 'statcast') {
     let newData = new Statcast({
@@ -51,7 +51,7 @@ let save = (total, era) => {
       }
     });
   } else if (era === 'traditional') {
-    let newData = new SabrEra({
+    let newData = new Traditional({
       count: total,
       verified: false
     });
@@ -66,7 +66,26 @@ let save = (total, era) => {
 
 };
 
-//TODO: function to post data to db
+
+
+let historicalSave = (dataToSave, category) => {
+  console.log('in the historical save function', dataToSave)
+  let newData = new History({
+    date: dataToSave.date,
+    count: dataToSave.count,
+    era: category
+  });
+  newData.save((err, success) => {
+    if (err) {
+      console.log('there was an error saving to mogno', err)
+    }
+  });
+};
+
+
+
+
+
 let find = (era, callback) => {
   if (era === 'statcast') {
     let results = Statcast.find();
@@ -106,5 +125,20 @@ let find = (era, callback) => {
   }
 };
 
+
+
+let clearCollection = (collection) => {
+  console.log('in the clear collections function')
+  mongoose.connection.db.dropCollection(collection, (err, succ) => {
+    if (err) {
+      console.log('there was an error deleteing the collection', err);
+    } else {
+      console.log('success deleting the collection');
+    }
+  })
+}
+
 exports.save = save;
 exports.find = find;
+exports.historicalSave = historicalSave;
+exports.delete = clearCollection;

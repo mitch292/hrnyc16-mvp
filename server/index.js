@@ -15,7 +15,7 @@ app.use(cors());
 
 //set up my routes
 
-
+//
 //traditional
 app.post('/traditional', (req, res) => {
   tweetSearch(req.body,(count) => {
@@ -26,15 +26,28 @@ app.post('/traditional', (req, res) => {
 
 app.get('/traditional', (req, res) => {
   db.find('traditional', (dataFromMongo) => {
-    console.log('the count returned to the server form the db', dataFromMongo[0].count)
     res.json(dataFromMongo[0].count);
   })
 })
+//historical table
+app.post('/history/traditional', (req, res) => {
+  objToSave = {
+    date: req.body.today,
+    count: req.body.count.data,
+    era: 'traditional'
+  }
+  db.historicalSave(objToSave, 'traditional');
+  res.send();
+});
+//delete old data
+app.get('/delete/traditional', (req, res) =>{
+  db.delete('traditionals')
+  res.send();
+});
 
 
 //sabr
 app.post('/sabr', (req, res) => {
-  console.log('sabr req body in server', req.body)
   tweetSearch(req.body,(count) => {
     db.save(count, 'sabr');
     res.send();
@@ -43,10 +56,25 @@ app.post('/sabr', (req, res) => {
 
 app.get('/sabr', (req, res) => {
   db.find('sabr', (dataFromMongo) => {
-    // console.log('the count returned to the server form the db', dataFromMongo[0].count)
-    // res.json(dataFromMongo[0].count);
+    res.json(dataFromMongo[0].count);
   })
 })
+//historical table
+app.post('/history/sabr', (req, res) => {
+  console.log('the request body', req.body);
+  objToSave = {
+    date: req.body.today,
+    count: req.body.count.data,
+    era: 'sabr'
+  }
+  db.historicalSave(objToSave, 'sabr');
+  res.send();
+});
+//delete old data
+app.get('/delete/sabr', (req, res) =>{
+  db.delete('sabreras')
+  res.send();
+});
 
 
 //statcast
@@ -59,10 +87,26 @@ app.post('/statcast', (req, res) => {
 
 app.get('/statcast', (req, res) => {
   db.find('statcast', (dataFromMongo) => {
-    console.log('the count returned to the server form the db', dataFromMongo[0].count)
     res.json(dataFromMongo[0].count);
   })
 })
+
+app.post('/history/statcast', (req, res) => {
+  console.log('the request body', req.body);
+  objToSave = {
+    date: req.body.today,
+    count: req.body.count.data,
+    era: 'statcast'
+  }
+  db.historicalSave(objToSave, 'statcast');
+  res.send();
+});
+
+app.get('/delete/statcast', (req, res) =>{
+  db.delete('statcasts')
+  res.send();
+});
+
 
 
 
