@@ -5,7 +5,7 @@ const cors = require('cors');
 const tweetSearch = require('../utils/searchTwitter.js').tweetSearch;
 
 let app = express();
-let port = 8080;
+let port = process.env.PORT || 8080;
 
 //middleware
 app.use(express.static(__dirname + '/../client/dist/'));
