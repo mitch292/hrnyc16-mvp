@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const hmacsha1 = require('hmacsha1');
-mongoose.connect('mongodb://localhost/hrmvp');
+let connectionLink = process.env.MONGODB_URI || 'mongodb://localhost/hrmvp'
+mongoose.connect(connectionLink);
 
 let traditionalEraSchema = mongoose.Schema({
   count: Number,
