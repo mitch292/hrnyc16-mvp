@@ -22,10 +22,15 @@ class App extends React.Component {
     this.currentDate = this.currentDate.bind(this);
   }
 
-  currentDate() {
+  currentDate(today) {
     let dateObj = new Date();
     let month = dateObj.getUTCMonth() + 1;
-    let day = dateObj.getUTCDate() - 1;
+    let day;
+    if (today) {
+      day = dateObj.getUTCDate();
+    } else {
+      day = dateObj.getUTCDate() - 1;
+    }
     let year = dateObj.getUTCFullYear();
     let newDate = `${year}-${month}-${day}`
     return newDate;
@@ -35,12 +40,13 @@ class App extends React.Component {
   searchTwitter(value) {
 
     //create a date for our query
-    let date = this.currentDate();
+    let yestDate = this.currentDate();
+    let today = this.currentDate(true);
     //each statistical categories query 
     const eraQueries = {
-      statcast: `("exit velocity") OR ("exit velo") filter:verified since:${date}`,
-      sabr: `(OPS baseball) OR (OPS mlb) filter:verified since:${date}`,
-      traditional: `("batting average") OR ("batting avg") filter:verified since:${date}`
+      statcast: `("exit velocity") OR ("exit velo") filter:verified since:${yestDate} until:${today}`,
+      sabr: `(OPS baseball) OR (OPS mlb) filter:verified since:${yestDate} until:${today}`,
+      traditional: `("batting average") OR ("batting avg") filter:verified since:${yestDate} until:${today}`
     }
 
     axios.post(`/${value}`, {
@@ -73,9 +79,10 @@ class App extends React.Component {
       traditional: 'click below',
       sabr: 'click below',
       statcast: 'click below',
+      displayLegend: false
     });
     let date = this.currentDate();
-    let ourEras = ['statcast', 'sabr', 'traditional']
+    let ourEras = ['statcast', 'sabr', 'traditional'];
     
     ourEras.forEach((era) => {
       axios.get(`/${era}`)
@@ -107,24 +114,26 @@ class App extends React.Component {
         <PageHeader>
           Battle of the Baseball Statics <br/>
           <small>
-            Click the buttons below to show the number of mentions on twitter for each statistical category below
+            Click the buttons to show the number of mentions on twitter by verified users for each statistical category below
           </small>
         </PageHeader>
         <Grid>
           <Row className="show-grid">
             <Col xs={12} md={8}>
-              <h4>
-                Click the buttons below to show the number of mentions<br/>on twitter for each statistical category below
-              </h4>
               <EraList categories={this.state} getData={this.fetchOurData}/>
             </Col>
             <Col xs={6} md={4}>
               <DataVisual categories={this.state} />
             </Col>
           </Row>
+          <Row className="show-grid">
+          <Col xs={12} md={8}>
+            <NewDay clearData={this.newDay} />
+          </Col>
+          </Row>
         </Grid>
 
-        <NewDay clearData={this.newDay} />
+        
 
       </div>
     )

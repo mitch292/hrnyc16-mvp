@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const hmacsha1 = require('hmacsha1');
 mongoose.connect('mongodb://localhost/hrmvp');
 
 let traditionalEraSchema = mongoose.Schema({
@@ -17,6 +18,7 @@ let statcastEraSchema = mongoose.Schema({
 });
 
 let countSchema = mongoose.Schema({
+  id: {type: String, unique: true},
   date: String,
   count: Number,
   era: String
@@ -69,8 +71,11 @@ let save = (total, era) => {
 
 
 let historicalSave = (dataToSave, category) => {
-  console.log('in the historical save function', dataToSave)
+
+  let hash = hmacsha1(dataToSave.date, category);
+
   let newData = new History({
+    id: hash,
     date: dataToSave.date,
     count: dataToSave.count,
     era: category
