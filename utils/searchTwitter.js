@@ -1,16 +1,22 @@
-const db = require('../database/index.js');
-const config = {
+const localConfig = require('../config.js');
+let config;
+const prodConfig = {
   consumerKey: process.env.CONSUMER_KEY,
   consumerSecret: process.env.CONSUMER_SECRET,
   accessToken: process.env.ACCESS_TOKEN,
   accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
-  callBackUrl: process.env.APP_URL
-} || require('../config.js');
-const Twitter = require('twitter-node-client').Twitter;
+  callBackUrl: process.env.APP_URL} || localConfig;
+  const Twitter = require('twitter-node-client').Twitter;
+  
+if (prodConfig.consumerKey === undefined) {
+  config = localConfig;
+} else {
+  config = prodConfig;
+}
 
 
-
-
+console.log('config', config)
+console.log('local config', localConfig);
 const twitter = new Twitter(config);
 
 let error = (err, response, body) => {

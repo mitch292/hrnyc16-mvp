@@ -1,6 +1,5 @@
 import React from 'react';
-import {PieChart} from 'react-easy-chart';
-import {Legend} from 'react-easy-chart';
+import { PieChart, Legend } from 'react-easy-chart';
 
 const DataVisual = (props) => {
   const pieData = [
