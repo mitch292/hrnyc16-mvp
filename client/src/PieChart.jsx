@@ -9,10 +9,12 @@ const DataVisual = (props) => {
     {key: 'statcast', value: props.categories.statcast}
   ]
 
+  let legendToggle = (props.categories.displayLegend === true) ? <Legend data={pieData} dataId={'key'} horizontal /> : null;
+
   return (
     <div>
       <PieChart data={pieData} size={300} />
-      <Legend data={pieData} dataId={'key'} horizontal />
+      {legendToggle}
     </div>
   )
 };

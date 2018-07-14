@@ -21,12 +21,11 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "d3": "^5.5.0",
     "express": "^4.16.3",
     "hmacsha1": "^1.0.0",
     "mongoose": "^5.2.3",
     "react": "^16.4.1",
-    "react-bubble-chart": "^0.4.0",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.1",
     "react-easy-chart": "^1.0.0",
     "twitter-node-client": "0.0.6"
@@ -38,7 +37,6 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "nodemon": "^1.18.1",
-    "react-hot-loader": "^4.3.3",
     "webpack": "^4.16.0",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"

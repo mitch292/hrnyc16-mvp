@@ -1,6 +1,7 @@
 import React from 'react';
 
 const EraList = (props) => (
+
   <ul>
   <li>
     Traditional: {props.categories.traditional}

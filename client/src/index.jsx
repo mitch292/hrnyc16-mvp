@@ -4,6 +4,7 @@ import axios from 'axios';
 import EraList from './EraList.jsx';
 import NewDay from './NewDay.jsx';
 import DataVisual from './PieChart.jsx';
+import {Grid, Row, Col, PageHeader} from 'react-bootstrap';
 
 class App extends React.Component {
   constructor() {
@@ -11,7 +12,8 @@ class App extends React.Component {
     this.state = {
       traditional: 0,
       sabr: 0,
-      statcast: 0
+      statcast: 0,
+      displayLegend: false
     }
     this.setState = this.setState.bind(this);
     this.fetchOurData = this.fetchOurData.bind(this);
@@ -50,6 +52,9 @@ class App extends React.Component {
 
   fetchOurData(era) {
     event.preventDefault();
+    this.setState({
+      displayLegend: true
+    })
     axios.get(`/${era}`)
       .then((response) => {
         this.setState({
@@ -99,13 +104,28 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Battle of Baseball Statics</h1>
-        <h4>
-          Click the buttons below to show the number of mentions on twitter for each statistical category below
-        </h4>
-        <EraList categories={this.state} getData={this.fetchOurData}/>
+        <PageHeader>
+          Battle of the Baseball Statics <br/>
+          <small>
+            Click the buttons below to show the number of mentions on twitter for each statistical category below
+          </small>
+        </PageHeader>
+        <Grid>
+          <Row className="show-grid">
+            <Col xs={12} md={8}>
+              <h4>
+                Click the buttons below to show the number of mentions<br/>on twitter for each statistical category below
+              </h4>
+              <EraList categories={this.state} getData={this.fetchOurData}/>
+            </Col>
+            <Col xs={6} md={4}>
+              <DataVisual categories={this.state} />
+            </Col>
+          </Row>
+        </Grid>
+
         <NewDay clearData={this.newDay} />
-        <DataVisual categories={this.state} />
+
       </div>
     )
   }
@@ -115,6 +135,5 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-module.hot.accept();
 
 

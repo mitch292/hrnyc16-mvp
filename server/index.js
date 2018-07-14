@@ -15,7 +15,7 @@ app.use(cors());
 
 //set up my routes
 
-//
+
 //traditional
 app.post('/traditional', (req, res) => {
   tweetSearch(req.body,(count) => {
